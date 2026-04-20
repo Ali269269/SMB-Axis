@@ -2,16 +2,20 @@
 
 import { useRef, useState, useCallback, useEffect } from "react";
 
-// ─── Replace with your actual video sources ───────────────────────────────────
+// ─── VIDEO FIX FOR VERCEL ─────────────────────────────────────────────────────
+// ❌ Don't use local /videos/ paths on Vercel — large files are excluded from deployments.
+// ✅ Host your videos on Cloudinary / Mux / Bunny CDN and paste the full URL here.
+// Example: src: "https://res.cloudinary.com/your-cloud/video/upload/realestatee.mp4"
+// ─────────────────────────────────────────────────────────────────────────────
 const VIDEOS = [
-  { id: 1, src: "/videos/realestatee.mp4", poster: "/images/poster-1.jpg", logo: "/images/mary.png" },
-  { id: 2, src: "/videos/realestatee.mp4", poster: "/images/poster-2.jpg", logo: "/images/gulf.png" },
-  { id: 3, src: "/videos/realestatee.mp4", poster: "/images/poster-3.jpg", logo: "/images/mary.png" },
+  { id: 1, src: "/videos/realestatee.mp4",  poster: "/images/poster-1.jpg", logo: "/images/mary.png" },
+  { id: 2, src: "/videos/realestatee.mp4",  poster: "/images/poster-2.jpg", logo: "/images/gulf.png" },
+  { id: 3, src: "/videos/realestatee.mp4",  poster: "/images/poster-3.jpg", logo: "/images/mary.png" },
   { id: 4, src: "/videos/realestateee.mp4", poster: "/images/poster-4.jpg", logo: "/images/mary.png" },
-  { id: 5, src: "/videos/realestatee.mp4", poster: "/images/poster-5.jpg", logo: "/images/mary.png" },
+  { id: 5, src: "/videos/realestatee.mp4",  poster: "/images/poster-5.jpg", logo: "/images/mary.png" },
 ];
 
-// ─── Design constants ─────────────────────────────────────────────────────────
+// ─── Design constants (desktop baseline) ──────────────────────────────────────
 const C = { w: 280, h: 460, r: 22.5 };
 const M = { w: 280, h: 350, r: 16.88 };
 const F = { w: 200, h: 280, r: 12.66 };
@@ -68,12 +72,15 @@ export default function TrustedByTeams() {
   const [playingId, setPlayingId] = useState<number | null>(null);
   const [isNavigating, setIsNavigating] = useState(false);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  // ── Responsive scale ──────────────────────────────────────────────────────
   const [scale, setScale] = useState(1);
 
-  // Responsive scale
   useEffect(() => {
     const update = () => {
+      // 32px = 2×16px horizontal padding
       const available = window.innerWidth - 32;
+      // clamp between a sensible minimum and 1 so it never goes above native size
       setScale(Math.min(1, available / BOX_W));
     };
     update();
@@ -81,6 +88,7 @@ export default function TrustedByTeams() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
+  // ── Thumbnail seek so poster frames show ─────────────────────────────────
   useEffect(() => {
     videoRefs.current.forEach((vid) => {
       if (!vid) return;
@@ -89,11 +97,8 @@ export default function TrustedByTeams() {
           vid.currentTime = 0.01;
         }
       };
-      if (vid.readyState >= 1) {
-        seek();
-      } else {
-        vid.addEventListener("loadedmetadata", seek, { once: true });
-      }
+      if (vid.readyState >= 1) seek();
+      else vid.addEventListener("loadedmetadata", seek, { once: true });
     });
   }, []);
 
@@ -112,6 +117,22 @@ export default function TrustedByTeams() {
     setTimeout(() => setIsNavigating(false), 600);
   }, [isNavigating, stopAll, total]);
 
+  // ── Touch / swipe support ─────────────────────────────────────────────────
+  const touchStartX = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 40) {
+      navigate(dx < 0 ? "next" : "prev");
+    }
+    touchStartX.current = null;
+  };
+
   const handleCenterClick = (vidIdx: number) => {
     const vid = videoRefs.current[vidIdx];
     if (!vid) return;
@@ -126,11 +147,18 @@ export default function TrustedByTeams() {
     }
   };
 
+  // Scaled height so the outer wrapper never clips content
+  const scaledH = BOX_H * scale;
+  const scaledW = BOX_W * scale;
+
   return (
-    // ✅ FIX: py-20 on desktop, py-8 on mobile; overflow-x hidden to prevent horizontal scroll
-    <section className="w-full py-8 sm:py-20 px-4 flex justify-center overflow-x-hidden">
-      {/* ✅ FIX: height accounts for scale so the wrapper never clips the scaled content */}
-      <div style={{ width: BOX_W * scale, height: BOX_H * scale }}>
+    <section className="w-full py-8 sm:py-20 flex justify-center overflow-x-hidden">
+      {/*
+        Outer wrapper: exactly the scaled dimensions so page layout is correct.
+        We DON'T add horizontal padding here — the scale already shrinks the box
+        to fit inside the viewport.
+      */}
+      <div style={{ width: scaledW, height: scaledH }}>
         <div
           className="relative overflow-hidden"
           style={{
@@ -144,6 +172,8 @@ export default function TrustedByTeams() {
             transformOrigin:      "top left",
             transform:            `scale(${scale})`,
           }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
 
           {/* ── Heading ── */}
@@ -171,12 +201,9 @@ export default function TrustedByTeams() {
             const slot = getSlot(vidIdx, active, total);
             if (slot < 0) return null;
 
-            const sz = SLOT_SIZES[slot];
+            const sz      = SLOT_SIZES[slot];
             const isCenter = slot === 2;
             const isPlaying = playingId === video.id;
-
-            const leftPx = SLOT_LEFTS[slot];
-            const topPx  = SLOT_TOPS[slot];
 
             return (
               <div
@@ -186,8 +213,8 @@ export default function TrustedByTeams() {
                 style={{
                   width:        sz.w,
                   height:       sz.h,
-                  left:         leftPx,
-                  top:          topPx,
+                  left:         SLOT_LEFTS[slot],
+                  top:          SLOT_TOPS[slot],
                   borderRadius: sz.r,
                   zIndex:       sz.z,
                   transition:   "all 0.5s cubic-bezier(0.4,0,0.2,1)",
@@ -208,12 +235,11 @@ export default function TrustedByTeams() {
                   className="w-full h-full object-cover"
                   loop
                   playsInline
+                  muted           // ← required for autoplay/inline on iOS Safari
                   preload="metadata"
                   onLoadedMetadata={(e) => {
-                    const vid = e.currentTarget;
-                    if (vid.paused && vid.currentTime === 0) {
-                      vid.currentTime = 0.01;
-                    }
+                    const v = e.currentTarget;
+                    if (v.paused && v.currentTime === 0) v.currentTime = 0.01;
                   }}
                   onPlay={() => setPlayingId(video.id)}
                   onPause={() => setPlayingId((p) => (p === video.id ? null : p))}
@@ -255,7 +281,7 @@ export default function TrustedByTeams() {
                   </button>
                 )}
 
-                {/* Mid cards: play icon (decorative only) */}
+                {/* Mid cards: decorative play icon */}
                 {(slot === 1 || slot === 3) && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center border border-white/30 backdrop-blur-sm">
@@ -266,14 +292,10 @@ export default function TrustedByTeams() {
                   </div>
                 )}
 
-                {/* Logo — center only */}
+                {/* Logo — center card only */}
                 {isCenter && (
                   <div className="absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none">
-                    <img
-                      src={video.logo}
-                      alt="logo"
-                      className="h-10 w-auto object-contain"
-                    />
+                    <img src={video.logo} alt="logo" className="h-10 w-auto object-contain" />
                   </div>
                 )}
               </div>
