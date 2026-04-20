@@ -2,8 +2,16 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
+type SystemCardProps = {
+  image: string;
+  title: string;
+  tags: string[];
+  circuitImage: string;
+  extraButton?: string;
+};
+
 // Reusable card component
-function SystemCard({ image, title, description, tags, circuitImage, extraButton }) {
+function SystemCard({ image, title, tags, circuitImage, extraButton }: SystemCardProps) {
   const ref = useRef(null);
   const [show, setShow] = useState(false);
 
@@ -305,7 +313,8 @@ export default function AllSystems() {
             zIndex: card2ZIndex,
           }}
         >
-          <SystemCard
+          <SystemCard 
+          
             image="/images/cyber.png"
             circuitImage="/images/circuit.png"
             title="Broker Growth Systems"
