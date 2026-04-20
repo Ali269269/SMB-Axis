@@ -49,7 +49,7 @@ export default function Contact() {
        .hero-section {
   position: relative;
   background: linear-gradient(0deg, rgba(13, 13,13, 0.90) 0%, rgba(12, 12, 12, 0.85) 50%, #191e2b 100%),
-              url('/images/heroCon.png') center/cover no-repeat;
+              url('/images/contactpic.png') center/cover no-repeat;
   padding: 80px 60px 60px;
   overflow: hidden;
   min-height: 400px; /* adjust height as needed */

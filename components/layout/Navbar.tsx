@@ -21,12 +21,55 @@ export default function Navbar() {
   const menuTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const subTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const subRefs = useRef<Record<string, HTMLUListElement | null>>({});
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+  const hamburgerRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close mobile menu when tapping outside — mobile only (< 768px)
+  useEffect(() => {
+    const isMobile = () => window.innerWidth < 768;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (!isMobile() || !mobileMenuOpen) return;
+      const target = e.target as Node;
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(target) &&
+        hamburgerRef.current &&
+        !hamburgerRef.current.contains(target)
+      ) {
+        setMobileMenuOpen(false);
+        setOpenMenu(null);
+        setOpenSub(null);
+      }
+    };
+
+    const handleFocusOut = (e: FocusEvent) => {
+      if (!isMobile() || !mobileMenuOpen) return;
+      const next = e.relatedTarget as Node | null;
+      if (next && mobileMenuRef.current?.contains(next)) return;
+      if (next && hamburgerRef.current?.contains(next)) return;
+      setTimeout(() => {
+        if (!mobileMenuRef.current?.contains(document.activeElement)) {
+          setMobileMenuOpen(false);
+          setOpenMenu(null);
+          setOpenSub(null);
+        }
+      }, 150);
+    };
+
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("focusout", handleFocusOut);
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("focusout", handleFocusOut);
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     if (!openSub) return;
@@ -339,7 +382,11 @@ style={{
       </Link>
 
       {/* MOBILE HAMBURGER */}
-      <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+      <button
+        ref={hamburgerRef}
+        className="md:hidden text-white"
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           {mobileMenuOpen ? (
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -351,7 +398,10 @@ style={{
 
       {/* MOBILE MENU */}
       {mobileMenuOpen && (
-        <div className="absolute top-full left-0 w-full bg-[#151A21] border-t border-[rgba(168,85,247,0.2)] shadow-xl md:hidden z-40">
+        <div
+          ref={mobileMenuRef}
+          className="absolute top-full left-0 w-full bg-[#151A21] border-t border-[rgba(168,85,247,0.2)] shadow-xl md:hidden z-40"
+        >
           <ul className="flex flex-col gap-1 py-4 px-6">
             {navLinks.map((link) => (
               <li key={link.label}>
