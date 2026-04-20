@@ -4,11 +4,11 @@ import { useRef, useState, useCallback, useEffect } from "react";
 
 // ─── Replace with your actual video sources ───────────────────────────────────
 const VIDEOS = [
-  { id: 1, src: "/videos.maryy.mp4", poster: "/images/poster-1.jpg", logo: "/images/mary.png" },
-  { id: 2, src: "/videos/maryy.mp4", poster: "/images/poster-2.jpg", logo: "/images/gulf.png" },
-  { id: 3, src: "/videos/maryy.mp4", poster: "/images/poster-3.jpg", logo: "/images/mary.png" },
-  { id: 4, src: "/videos/maryy.mp4", poster: "/images/poster-4.jpg", logo: "/images/mary.png" },
-  { id: 5, src: "/videos/maryy.mp4", poster: "/images/poster-5.jpg", logo: "/images/mary.png" },
+  { id: 1, src: "/videos/realestate.mp4", poster: "/images/poster-1.jpg", logo: "/images/mary.png" },
+  { id: 2, src: "/videos/realestate.mp4", poster: "/images/poster-2.jpg", logo: "/images/gulf.png" },
+  { id: 3, src: "/videos/realestate.mp4", poster: "/images/poster-3.jpg", logo: "/images/mary.png" },
+  { id: 4, src: "/videos/realestatee.mp4", poster: "/images/poster-4.jpg", logo: "/images/mary.png" },
+  { id: 5, src: "/videos/realestatee.mp4", poster: "/images/poster-5.jpg", logo: "/images/mary.png" },
 ];
 
 // ─── Design constants ─────────────────────────────────────────────────────────
