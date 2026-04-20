@@ -209,7 +209,7 @@ export default function OurPortfolio() {
       {/* Portfolio Grid — 4 columns × 2 rows = 8 cards */}
       <div
         style={{
-          padding: "0 7% 80px",
+          padding: "0 9% 80px",
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
           gap: "40px 20px",
