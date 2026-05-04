@@ -84,24 +84,25 @@ export default function Navbar() {
   }, [openSub]);
 
   const navLinks = [
+     {
+      label: "About Us",
+      href: "#",
+      dropdown: [
+        { label: "OUR TEAM", href: "/pages/Our-Team", subtitle: "Expert Synergy – Human Capital" },
+        { label: "OUR PORTFOLIO", href: "/pages/portfol", subtitle: "Proven Excellence – Visual Proof" },
+        { label: "CASE STUDIES", href: "/pages/case-studies", subtitle: "Data-Driven Results – Social Proof" },
+      ],
+    },
     {
       label: "Resources",
       href: "#",
       dropdown: [
-        { label: "BLOGS", href: "/blog", subtitle: "Thought Leadership – Market Insight" },
-        { label: "HELP CENTRE", href: "/help-centre", subtitle: "Client Success – Support Infrastructure" },
-        { label: "CONTACT", href: "/contact", subtitle: "Strategic Partnership – Initiate Growth" },
+        { label: "BLOGS", href: "/pages/blog", subtitle: "Thought Leadership – Market Insight" },
+        { label: "HELP CENTRE", href: "/pages/help-centre", subtitle: "Client Success – Support Infrastructure" },
+        { label: "CONTACT", href: "/pages/contact", subtitle: "Strategic Partnership – Initiate Growth" },
       ],
     },
-    {
-      label: "About Us",
-      href: "#",
-      dropdown: [
-        { label: "OUR TEAM", href: "/Our-Team", subtitle: "Expert Synergy – Human Capital" },
-        { label: "OUR PORTFOLIO", href: "/portfol", subtitle: "Proven Excellence – Visual Proof" },
-        { label: "CASE STUDIES", href: "/case-studies", subtitle: "Data-Driven Results – Social Proof" },
-      ],
-    },
+   
     {
       label: "Solutions",
       href: "#",
@@ -110,27 +111,27 @@ export default function Navbar() {
           label: "CORE REVENUE SYSTEM (Frontline Offer - Sell First)",
           href: "/core-revenue-system",
           sub: [
-            { label: "Lead Generation & Funnel", href: "/leadgen", icon: <BarChart3 className="text-white w-5 h-5" /> },
-            { label: "Personal Branding for Agents", href: "/training", icon: <FaUser className="text-white" /> },
-            { label: "Conversion & CRM Optimization", href: "/training", icon: <Settings className="w-5 h-5 text-white" /> },
-            { label: "Social Media & Content Engine", href: "/training", icon: <Smartphone className="text-white w-5 h-5" /> },
+            { label: "Lead Generation & Funnel", href: "/pages/training", icon: <BarChart3 className="text-white w-5 h-5" /> },
+            { label: "Personal Branding for Agents", href: "/pages/training", icon: <FaUser className="text-white" /> },
+            { label: "Conversion & CRM Optimization", href: "/pages/training", icon: <Settings className="w-5 h-5 text-white" /> },
+            { label: "Social Media & Content Engine", href: "/pages/training", icon: <Smartphone className="text-white w-5 h-5" /> },
           ],
         },
         {
           label: "GROWTH & TECHNOLOGY LAYERS (Upsell - Authority & Impress)",
           href: "/growth-tech",
           sub: [
-            { label: "Websites & Real Estate Portals", href: "/training", icon: <FaGlobe className="w-5 h-5 text-white" /> },
-            { label: "AI-Powered Lead Systems", href: "/training", icon: <FaRobot className="w-5 h-5 text-white" /> },
-            { label: "Team Training & Process Consulting", href: "/training", icon: <FaBullseye className="w-5 h-5 text-white" /> },
+            { label: "Websites & Real Estate Portals", href: "/pages/training", icon: <FaGlobe className="w-5 h-5 text-white" /> },
+            { label: "AI-Powered Lead Systems", href: "/pages/training", icon: <FaRobot className="w-5 h-5 text-white" /> },
+            { label: "Team Training & Process Consulting", href: "/pages/training", icon: <FaBullseye className="w-5 h-5 text-white" /> },
           ],
         },
         {
           label: "ADVANCE & FUTURE TECH (High-End Layer - Impress)",
           href: "/future-tech",
           sub: [
-            { label: "Blockchain & Tokenization Solution", href: "/training", icon: <SiBlockchaindotcom className="w-5 h-5 text-white" /> },
-            { label: "Cyber Security", href: "/training", icon: <FaLock className="w-4 h-4 text-white" /> },
+            { label: "Blockchain & Tokenization Solution", href: "/pages/training", icon: <SiBlockchaindotcom className="w-5 h-5 text-white" /> },
+            { label: "Cyber Security", href: "/pages/training", icon: <FaLock className="w-4 h-4 text-white" /> },
           ],
         },
         {

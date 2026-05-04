@@ -165,7 +165,7 @@ export default function Footer() {
                         }
                         let link = "#";
                         if (item === "Lead Generation & Funnels") link = "/leadgen";
-                        else if (item === "Personal Branding for Agents") link = "/training";
+                        else if (item === "Personal Branding for Agents") link = "/Dashboard/Admin-Dashboard";
                         else if (item === "Conversion & RCM Optimization") link = "/training";
                         else if (item === "Social Media & Content Engine") link = "/training";
                         else if (item === "Blockchain & Tokenization System") link = "/training";
@@ -193,7 +193,7 @@ export default function Footer() {
                         "Cyber Security",
                       ].map((item) => {
                         let link = "#";
-                        if (item === "Websites and Real Estate Portals") link = "/training";
+                        if (item === "Websites and Real Estate Portals") link = "/pages/Admin-Dashboard";
                         else if (item === "AI-Powered Lead Systems") link = "/training";
                         else if (item === "Team Training Process Consulting") link = "/training";
                         else if (item === "Training and Webinar") link = "/training";
@@ -224,7 +224,7 @@ export default function Footer() {
                 <ul className="space-y-2.5">
                   {["Portfolio", "Careers", "Our Team", "Case Studies"].map((item) => {
                     let href = "#";
-                    if (item === "Portfolio") href = "/portfol";
+                    if (item === "Portfolio") href = "/pages/portfol";
                     if (item === "Privacy Policy") href = "/privacy-policy";
                     if (item === "Our Team") href = "/Our-Team";
                     if (item === "Case Studies") href = "/case-studies";
@@ -248,11 +248,11 @@ export default function Footer() {
                     <li key={item}>
                       <Link
                         href={
-                          item === "Help Centre" ? "/help-centre"
-                          : item === "Contact" ? "/contact"
-                          : item === "Privacy Policy" ? "/privacy-policy"
-                          : item === "Terms of Use" ? "/terms"
-                          : item === "Blogs" ? "/blog"
+                          item === "Help Centre" ? "/pages/help-centre"
+                          : item === "Contact" ? "/pages/contact"
+                          : item === "Privacy Policy" ? "/pages/privacy-policy"
+                          : item === "Terms of Use" ? "/pages/terms"
+                          : item === "Blogs" ? "/pages/blog"
                           : "#"
                         }
                         className="text-white/50 text-sm hover:text-white transition-colors duration-150"

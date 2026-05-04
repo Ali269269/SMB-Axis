@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "components/sections/System.jsx", "components/sections/Bookage.tsx"  ],
+, "components/sections/System.jsx", "components/sections/Bookage.tsx", "app/pages/Admin-Dashboard/page.jsx"  ],
   "exclude": ["node_modules"]
 }

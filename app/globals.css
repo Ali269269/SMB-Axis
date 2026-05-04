@@ -16,7 +16,22 @@
   --color-text-muted: #9AA1AC;
 
   /* ---- TYPOGRAPHY ---- */
+::-webkit-scrollbar {
+  height: 4px; 
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+}
 
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-clear-button {
+  display: none;
+}
+input[type="date"],
+input[type="time"] {
+  accent-color:dark; /* purple */
+}
   /* Font Families */
   --font-heading: "Space Grotesk";
   --font-body: "Space Grotesk";
